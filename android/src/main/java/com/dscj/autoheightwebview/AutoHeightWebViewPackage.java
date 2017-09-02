@@ -16,7 +16,6 @@ public class AutoHeightWebViewPackage implements ReactPackage {
         return new ArrayList<>();
     }
 
-    @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactApplicationContext) {
         return Arrays.<ViewManager>asList(
                 new AutoHeightWebViewManager()
