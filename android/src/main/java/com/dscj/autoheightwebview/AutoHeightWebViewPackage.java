@@ -15,14 +15,13 @@ public class AutoHeightWebViewPackage implements ReactPackage {
     public List<NativeModule> createNativeModules(ReactApplicationContext reactApplicationContext) {
         return new ArrayList<>();
     }
-
+    @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactApplicationContext) {
         return Arrays.<ViewManager>asList(
                 new AutoHeightWebViewManager()
         );
     }
 
-    @Override
     public List<Class<? extends JavaScriptModule>> createJSModules() {
         return Arrays.asList();
     }
