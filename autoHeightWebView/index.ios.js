@@ -8,7 +8,8 @@ import {
     StyleSheet,
     View,
     ViewPropTypes,
-    WebView
+    WebView,
+    Linking
 } from 'react-native';
 
 import PropTypes from 'prop-types';
@@ -84,7 +85,14 @@ export default class AutoHeightWebView extends PureComponent {
             this.props.onHeightUpdated(height);
         }
     }
-
+    _handleUrl = (url) => {
+        let webUrl = url
+        const index = webUrl.lastIndexOf('#')
+        if(index>0){
+            webUrl = webUrl.substring(0,index)
+        }
+        return webUrl
+    }
     handleNavigationStateChange(navState) {
         const height = Number(navState.title);
         if (height) {
@@ -103,6 +111,10 @@ export default class AutoHeightWebView extends PureComponent {
                 }
             });
         }
+        if (this._handleUrl(navState.url) !== this.props.source.uri) {
+            this.webview.stopLoading();
+            Linking.openURL(navState.url);
+        }
     }
 
     render() {
@@ -115,12 +127,14 @@ export default class AutoHeightWebView extends PureComponent {
                 height: height + heightOffset,
             }, style]}>
                 <WebView
+                    ref={(ref)=>this.webview = ref}
                     style={Styles.webView}
                     injectedJavaScript={script + customScript}
                     scrollEnabled={false}
                     scalesPageToFit={scalesPageToFit}
                     source={webViewSource}
-                    onNavigationStateChange={this.handleNavigationStateChange} />
+                    onNavigationStateChange={this.handleNavigationStateChange}
+                     />
             </Animated.View>
         );
     }
